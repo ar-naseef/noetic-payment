@@ -5,6 +5,14 @@
     /* border-radius: 0px; */
 }
 
+.myButton2 {
+    background-color: #3498db;
+    border: 0px;
+    color: aliceblue;
+    left: 80%;
+    /* border-radius: 0px; */
+}
+
 .myModal {
     /* border-radius: 0px; */
 }
@@ -26,4 +34,14 @@
 
 .cardNumber {
     width: 80%;
+}
+
+.myColumns {
+    margin-bottom: 0px;
+}
+
+.cardLogo {
+    text-align: center;
+    height: 60px;
+    margin: auto;
 }

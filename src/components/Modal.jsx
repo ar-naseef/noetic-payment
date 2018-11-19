@@ -7,12 +7,14 @@ import { showModal, updateInput, validateCard } from '../actions/paymentAction';
 
 import './comp.css';
 
+import VisaImg from './VisaImg';
+
 export class Modal extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      validCard: ""
+      validationError: ""
     }
   }
 
@@ -30,21 +32,69 @@ export class Modal extends Component {
     this.props.validateCard(cardNum)
   }
 
+  validateAndProceed = (e) => {
+    if (!this.props.data.inputObj.name) {
+      this.setState({
+        validationError: "Name cannot be blank"
+      })
+    } else if (!this.props.data.inputObj.cardNum) {
+      this.setState({
+        validationError: "Card number cannot be blank"
+      })
+    } else if (!this.props.data.inputObj.expiery) {
+      this.setState({
+        validationError: "exp date cannot be blank"
+      })
+    } else if (!this.props.data.inputObj.cvv) {
+      this.setState({
+        validationError: "CVV cannot be blank"
+      })
+    } else {
+      let dValue = this.props.data.inputObj.expiery;
+      let result = false;
+      dValue = dValue.split('/');
+      let pattern = /^\d{2}$/;
+    
+      if (dValue[0] < 1 || dValue[0] > 12)
+          result = true;
+    
+      if (!pattern.test(dValue[0]) || !pattern.test(dValue[1]))
+          result = true;
+    
+      if (dValue[2])
+          result = true;
+    
+      if (result) {
+        this.setState({
+          validationError: "Please enter a valid date in MM/YY format."
+        })
+      }      
+    }
+  }
+
   render() {
+
+    let validCard = ""
+    if (this.props.data.inputObj.cardNum) {
+      validCard = (this.props.data.cardData.isPotentiallyValid && this.props.data.cardData.isValid) ? 
+        "is-success" : 
+        (this.props.data.cardData.isPotentiallyValid || this.props.data.cardData.isValid) ? "is-info" : "is-danger"
+    }
+
     return (
       <div>	
         {this.props.data.showModal ? (
-          <div class="modal is-active">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-              <header class="modal-card-head myModal">
-                <p class="modal-card-title">Initiate Payment</p>
-                <button class="delete" aria-label="close" onClick={() => {
+          <div className="modal is-active">
+            <div className="modal-background"></div>
+            <div className="modal-card">
+              <header className="modal-card-head myModal">
+                <p className="modal-card-title">Initiate Payment</p>
+                <button className="delete" aria-label="close" onClick={() => {
                   this.closeModal()
                 }}></button>
               </header>
               
-              <section class="modal-card-body">
+              <section className="modal-card-body">
                 <img src={img} className="cardImg" />
                 
                 <br />
@@ -52,46 +102,59 @@ export class Modal extends Component {
 
                 <div className="cardForm">
                   {/* name */}
-                  <div class="field">
-                    <div class="control">
-                      <input class={`input`} name="name" type="text" placeholder="Card Holder Name" onChange={(e) => {
+                  <div className="field">
+                    <div className="control">
+                      <input className={`input`} name="name" type="text" placeholder="Card Holder Name" onChange={(e) => {
                         this.handleChange(e.target.name, e.target.value)
                       }} />
                     </div>
                   </div>
                   {/* card No */}
-                  <div class="field columns is-mobile">
-                    <div class="control column">
-                      <input class={`input ${this.state.validCard}`} name="cardNum" type="text" placeholder="Card Number" onChange={(e) => {
+                  <div className="field columns is-mobile" style={{
+                    marginBottom: "0px"
+                  }}>
+                    <div className="control column">
+                      <input className={`input ${validCard}`} name="cardNum" type="text" placeholder="Card Number" onChange={(e) => {
                         this.handleChange(e.target.name, e.target.value)
                         this.validateCard(e.target.value)
                       }} />
                     </div>
-                    <div className="column is-one-fifth">hi</div>
+                    {this.props.data.cardData.card ? (
+                      <div className="column is-one-fifth cardLogo">
+                      <VisaImg cardType={this.props.data.cardData.card.type} />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
                   </div>
                   <div className="columns is-mobile">
                     {/* expiery date */}
-                    <div class="field column">
-                      <div class="control">
-                        <input class={`input ${this.state.validCard}`} name="expiery" type="text" placeholder="MM/YY" onChange={(e) => {
+                    <div className="field column is-half">
+                      <div className="control">
+                        <input className={`input`} name="expiery" type="text" placeholder="MM/YY" onChange={(e) => {
                         this.handleChange(e.target.name, e.target.value)
                       }} />
                       </div>
                     </div>
                     {/* cvv */}
-                    <div class="field column">
-                      <div class="control">
-                        <input class={`input ${this.state.validCard}`} name="cvv" type="text" placeholder="CVV" onChange={(e) => {
+                    <div className="field column">
+                      <div className="control">
+                        <input className={`input`} maxLength="3" name="cvv" type="text" placeholder="CVV" onChange={(e) => {
                         this.handleChange(e.target.name, e.target.value)
                       }} />
                       </div>
+                    </div>
+                    <div className="column is-one-fifth">
+                      <img src="https://qph.fs.quoracdn.net/main-qimg-ba4f3021e3b5a31a944f4740ca9b0ee7" />
                     </div>
                   </div>
                 </div>
               </section>
 
-              <footer class="modal-card-foot myModal">
-                <button class="button myButton is-pulled-right">Proceed</button>
+              <footer className="modal-card-foot myModal">
+                <div className="is-pulled-right button myButton2" onClick={(e) => {
+                  this.validateAndProceed(e);
+                }}>Proceed</div>
               </footer>
             </div>
           </div>
