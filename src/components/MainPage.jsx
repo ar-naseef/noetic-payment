@@ -20,7 +20,9 @@ export class MainPage extends Component {
         <h1 className="title myHeading">
 					<span style={{
 						color: "#42f4dc"
-					}}>Noetic</span> Payments
+					}}>Noetic</span> <span style={{
+						color: "gray"
+					}}>Payments</span>
 				</h1>
 				<div className={`button is-medium myButton ${this.state.loading}`} onClick={(e) => {
 					this.setState({
