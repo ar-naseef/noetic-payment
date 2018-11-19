@@ -5,7 +5,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  showModal: true,
+  showModal: false,
   inputObj: {},
   cardData: {}
 };
