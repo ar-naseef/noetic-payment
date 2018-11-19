@@ -1,1 +1,1 @@
-### Noetic Assignment (payment UI) 
+### Noetic Assignment (payment UI)
