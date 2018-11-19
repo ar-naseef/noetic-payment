@@ -127,7 +127,7 @@ export class Modal extends Component {
                 </section>
               ) : (
                 <section className="modal-card-body">
-                  <img src={img} className="cardImg" />
+                  <img src={img} alt="card" className="cardImg" />
                   
                   <br />
                   <h1 className="subtitle">Rs 999.00</h1>
@@ -177,7 +177,7 @@ export class Modal extends Component {
                         </div>
                       </div>
                       <div className="column is-one-fifth">
-                        <img src="https://qph.fs.quoracdn.net/main-qimg-ba4f3021e3b5a31a944f4740ca9b0ee7" />
+                        <img alt="cvv" src="https://qph.fs.quoracdn.net/main-qimg-ba4f3021e3b5a31a944f4740ca9b0ee7" />
                       </div>
                     </div>
                   </div>
